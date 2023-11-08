@@ -9,10 +9,9 @@ function App() {
   const [articles, setArticles] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Fetch articles from json-server when the component mounts
+  // Fetch articles from the actual backend API endpoint once it's implemented
   useEffect(() => {
-    // TODO: Replace with your actual backend API endpoint once it's implemented
-    fetch('http://localhost:3000/data')
+    fetch('http://127.0.0.1:5555/news') // Update this endpoint as needed
       .then((response) => response.json())
       .then((data) => setArticles(data))
       .catch((error) => {
@@ -22,14 +21,7 @@ function App() {
   }, []);
 
   const handleLogin = (username, password) => {
-    // TODO: Replace with actual backend login logic
-    setIsAuthenticated(true); // Simulated authentication
-  };
-
-  const handleSignup = (username, password) => {
-    // TODO: Implement actual backend signup logic
-    // For now, we're simulating a signup by posting to json-server
-    fetch('http://localhost:3000/users', {
+    fetch('http://127.0.0.1:5555/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -38,13 +30,35 @@ function App() {
     })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Could not complete signup');
+        throw new Error('Login failed');
       }
       return response.json();
     })
     .then(data => {
-      // Simulate authentication upon successful signup
-      setIsAuthenticated(true);
+      setIsAuthenticated(true); // Update authentication state
+    })
+    .catch(error => {
+      console.error('Error during login:', error);
+      // Handle login error case here
+    });
+  };
+
+  const handleSignup = (username, password) => {
+    fetch('http://127.0.0.1:5555/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Signup failed');
+      }
+      return response.json();
+    })
+    .then(data => {
+      setIsAuthenticated(true); // Update authentication state
     })
     .catch(error => {
       console.error('Error during signup:', error);
@@ -68,4 +82,3 @@ function App() {
 }
 
 export default App;
-
