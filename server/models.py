@@ -58,8 +58,6 @@ class News(db.Model, SerializerMixin):
     user = db.relationship('User', back_populates='new')
 
 
-
-
 class Favorite(db.Model, SerializerMixin):
     __tablename__ =  'favorites'
 
@@ -68,5 +66,7 @@ class Favorite(db.Model, SerializerMixin):
     name = db.Column(db.String)
 
     new = db.relationship('News', back_populates='favorite')
+
+
 
 

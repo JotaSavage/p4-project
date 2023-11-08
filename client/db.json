@@ -1,0 +1,95 @@
+{
+"users" : [],
+"data" : [
+{
+    "id": 1,
+    "title": "Local Startup Secures Funding",
+    "date_published": "2023-11-07T09:00:00Z",
+    "article_image": "https://dummyimage.com/600x400/000/fff&text=Local+Startup+Secures+Funding",
+    "author": "Jane Doe",
+    "publishing_organization": "TechNews Daily",
+    "content": "In a surprising turn of events, a local startup has secured significant funding from prominent venture capitalists..."
+  },
+  {
+    "id": 2,
+    "title": "Breakthrough in Renewable Energy",
+    "date_published": "2023-11-08T09:00:00Z",
+    "article_image": "https://dummyimage.com/600x400/000/fff&text=Breakthrough+in+Renewable+Energy",
+    "author": "John Smith",
+    "publishing_organization": "EcoInnovate Magazine",
+    "content": "Researchers have announced a groundbreaking development in renewable energy, promising a cleaner, more sustainable future..."
+  },
+  {
+    "id": 3,
+    "title": "AI Revolutionizes Medical Diagnostics",
+    "date_published": "2023-11-09T09:00:00Z",
+    "article_image": "https://dummyimage.com/600x400/000/fff&text=AI+Revolutionizes+Medical+Diagnostics",
+    "author": "Alice Johnson",
+    "publishing_organization": "HealthTech Weekly",
+    "content": "The medical field is set for a transformation as artificial intelligence begins to outperform doctors in diagnostic accuracy..."
+  },
+  {
+    "id": 4,
+    "title": "New Discoveries in Deep Space",
+    "date_published": "2023-11-10T19:19:37Z",
+    "article_image": "https://dummyimage.com/600x400/000/fff&text=New+Discoveries+in+Deep+Space",
+    "author": "Bob Brown",
+    "publishing_organization": "AstroResearch Journal",
+    "content": "Astronomers have made an exhilarating new discovery, shedding light on the mysteries of the farthest reaches of space..."
+  },
+  {
+  "id": 5,
+  "title": "Quantum Computing Goes Commercial",
+  "date_published": "2023-11-11T19:19:37Z",
+  "article_image": "https://dummyimage.com/600x400/000/fff&text=Quantum+Computing+Goes+Commercial",
+  "author": "Charlie Davis",
+  "publishing_organization": "Quantum Times",
+  "content": "Quantum computing is taking a giant leap from research labs to business applications, with implications for numerous industries..."
+},
+{
+    "id": 6,
+    "title": "Education Reform: A Digital Turn",
+    "date_published": "2023-11-12T19:19:37Z",
+    "article_image": "https://dummyimage.com/600x400/000/fff&text=Education+Reform:+A+Digital+Turn",
+    "author": "Diane Evans",
+    "publishing_organization": "EdFuture Review",
+    "content": "In response to global educational challenges, a sweeping reform has been proposed to integrate digital tools in classrooms..."
+  },
+  {
+    "id": 7,
+    "title": "Cybersecurity Threats on the Rise",
+    "date_published": "2023-11-13T19:19:37Z",
+    "article_image": "https://dummyimage.com/600x400/000/fff&text=Cybersecurity+Threats+on+the+Rise",
+    "author": "Frank Green",
+    "publishing_organization": "CyberSafe Monthly",
+    "content": "As our lives become increasingly digital, cybersecurity threats are growing more sophisticated and frequent..."
+  },
+  {
+    "id": 8,
+    "title": "The Future of Transportation",
+    "date_published": "2023-11-14T19:19:37Z",
+    "article_image": "https://dummyimage.com/600x400/000/fff&text=The+Future+of+Transportation",
+    "author": "Grace Hall",
+    "publishing_organization": "NextGen Transportation",
+    "content": "With a focus on sustainability and efficiency, the transportation sector is undergoing a radical change..."
+  },
+  {
+    "id": 9,
+    "title": "Revolution in Agriculture with Gene Editing",
+    "date_published": "2023-11-15T19:19:37Z",
+    "article_image": "https://dummyimage.com/600x400/000/fff&text=Revolution+in+Agriculture+with+Gene+Editing",
+    "author": "Henry Adams",
+    "publishing_organization": "AgriTech Today",
+    "content": "Gene editing in agriculture is poised to significantly boost crop yields while reducing the environmental impact..."
+  },
+  {
+    "id": 10,
+    "title": "Virtual Reality: The New Frontier in Therapy",
+    "date_published": "2023-11-16T19:19:37Z",
+    "article_image": "https://dummyimage.com/600x400/000/fff&text=Virtual+Reality:+The+New+Frontier+in+Therapy",
+    "author": "Isabella Thompson",
+    "publishing_organization": "Mind and VR",
+    "content": "Mental health professionals are turning to virtual reality to treat a variety of psychological conditions in ways never before possible..."
+  }
+]
+}

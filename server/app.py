@@ -46,7 +46,7 @@ def news_by_id(id):
     if not new:
         return {"error": "News not found"}, 404
     if request.method == 'GET':
-        return new.to_dict(), 200
+        return new.to_dict(rules=('-favorites',)), 200
     
 
 @app.route('/favorites/<int:id>', methods=['GET', 'PATCH'])
