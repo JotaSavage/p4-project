@@ -10,8 +10,14 @@ function Signup({ onSignup }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     setError(''); // Clear any existing errors
-    // TODO: This will need to be hooked up to the backend signup logic
-    onSignup(username, password, setError);
+
+    onSignup(username, password)
+      .then(() => {
+        navigate('/data'); // Redirect to the articles page or another page of your choice
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
   };
 
   return (
