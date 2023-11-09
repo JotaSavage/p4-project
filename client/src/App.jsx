@@ -4,6 +4,10 @@ import ArticlePage from './Components/ArticlePage';
 import Signup from './Components/Signup';
 import Login from './Components/Login';
 import Card from './Components/Card'; // Assuming 'Card' is a component for displaying articles
+import Favorites from './Components/Favorites'; // Import the Favorites component
+
+
+
 
 function App() {
   const [articles, setArticles] = useState([]);
@@ -24,17 +28,46 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login setAuth={setAuth} />} />
-          <Route path="/data" element={isAuthenticated ? <Card articles={articles} /> : <Navigate to="/login" />} />
-          <Route path="/article/:articleId" element={isAuthenticated ? <ArticlePage articles={articles} /> : <Navigate to="/login" />} />
-          {/* Additional routes as needed */}
-        </Routes>
-      </div>
-    </Router>
+  <div className="App">
+    <Routes>
+      <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login setAuth={setAuth} />} />
+      <Route
+        path="/data"
+        element={
+          isAuthenticated ? (
+            <Card articles={articles} setAuth={setAuth} isAuthenticated={isAuthenticated} />
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
+      <Route
+        path="/favorites"
+        element={
+          isAuthenticated ? (
+            <Favorites />
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
+      <Route
+        path="/article/:articleId"
+        element={
+          isAuthenticated ? (
+            <ArticlePage articles={articles} />
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
+      {/* Additional routes as needed */}
+    </Routes>
+  </div>
+</Router>
+
   );
 }
 

@@ -85,6 +85,23 @@ def favorites_by_id(id):
         db.session.commit()
         return favorite.to_dict(), 200
 
+@app.route('/favorites', methods=['GET'])
+def get_user_favorites():
+    # Check if the user is logged in (you can use session or token-based authentication)
+    user_id = session.get('user_id')  # Replace with your actual user session logic
+
+    if not user_id:
+        return jsonify({'message': 'User not logged in'}), 401
+
+    # Query the database to get all of the user's favorite articles
+    favorite_articles = Favorite.query.filter_by(user_id=user_id).all()
+
+    # Convert favorite articles to a list of dictionaries
+    favorite_articles_list = [favorite.to_dict() for favorite in favorite_articles]
+
+    return jsonify(favorite_articles_list), 200
+
+
 
 @app.route('/signup', methods=['POST'])
 def signup():
