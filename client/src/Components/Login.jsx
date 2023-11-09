@@ -1,21 +1,48 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Login({ onLogin }) {
+function Login({ setAuth }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();  // Hook to navigate to different routes
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setError(''); // Clear any existing errors
-    // TODO: Implement backend login logic here
-    onLogin(username, password, setError);
+    setError('');
+
+    const userData = {
+      username,
+      password,
+    };
+
+    fetch('http://127.0.0.1:5555/login', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(userData),
+  credentials: 'include' // This tells the browser to send cookies along with the request
+})
+.then((response) => {
+  if (!response.ok) {
+    throw new Error('Login failed');
+  }
+  return response.json();
+})
+.then((data) => {
+  setAuth(true);
+  navigate('/data'); // Navigate to the data page on successful login
+})
+.catch((error) => {
+  console.error('Error during login:', error);
+  setError('Login failed. Please check your credentials.');
+});
   };
+  
 
   const handleSignupRedirect = () => {
-    navigate('/signup'); // Navigate to the signup page
+    navigate('/signup');
   };
 
   return (

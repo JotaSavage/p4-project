@@ -8,9 +8,25 @@ function ArticlePage({ articles }) {
   // TODO: Add any necessary state or props for handling favorites
 
   const handleFavorite = (articleId) => {
-    // TODO: Implement the backend logic for favoriting an article here
-    console.log(`Article with ID ${articleId} has been favorited!`);
-    // This is where the backend POST request would be sent
+    fetch(`http://127.0.0.1:5555/news/${articleId}/favorite`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Favoriting failed');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(`Article with ID ${articleId} has been favorited!`);
+      })
+      .catch((error) => {
+        console.error('Error during favoriting:', error);
+        // Display an error message to the user
+      });
   };
 
   if (!article) {

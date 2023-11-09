@@ -14,6 +14,7 @@ app.secret_key = os.environ.get('SECRET_KEY', 'optional_default_key')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
+logging.basicConfig(level=logging.INFO)
 
 CORS(app, supports_credentials=True, origins=["http://127.0.0.1:5173"])
 migrate = Migrate(app, db)
@@ -56,15 +57,14 @@ def news_by_id(id):
 def favorite_news(id):
     user_id = session.get('user_id')
     if not user_id:
-        return {'message': 'User not logged in'}, 401
+        return jsonify({'message': 'User not logged in'}), 401
     new = News.query.get(id)
     if not new:
-        return {'message': 'News not found'}, 404
-    favorite = Favorite(name=new.title)
-    new.favorite = favorite
+        return jsonify({'message': 'News not found'}), 404
+    favorite = Favorite(news_id=new.id, user_id=user_id)  # Assuming a Favorite model with news_id and user_id fields
     db.session.add(favorite)
     db.session.commit()
-    return {'message': 'News favorited'}, 200   
+    return jsonify({'message': 'News favorited'}), 200
 
 @app.route('/favorites/<int:id>', methods=['GET', 'PATCH'])
 def favorites_by_id(id):
@@ -84,6 +84,7 @@ def favorites_by_id(id):
         db.session.add(favorite)
         db.session.commit()
         return favorite.to_dict(), 200
+
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -115,7 +116,11 @@ def login():
 
     # If everything is okay, log in the user
     session['user_id'] = user.id
+    logging.info('Session after login: %s', session)
     return {'message': 'login success'}, 200
+
+
+
 
 @app.route('/check_session')
 def check_session():
