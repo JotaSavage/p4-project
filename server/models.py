@@ -13,38 +13,43 @@ db = SQLAlchemy(metadata=metadata)
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
-    serialize_rules = ('-new.user',)
+    # Prevent recursive serialization
+    serialize_rules = ('-password_hash', '-favorites.news.user', '-news.user', '-favorites.user')
+    
     id = db.Column(db.Integer(), primary_key=True)
-    username = db.Column(db.String, nullable=False)
-    _password_hash = db.Column(db.String)
+    username = db.Column(db.String(120), nullable=False)
+    _password_hash = db.Column(db.String(128))
 
-    # Maintain the favorites relationship in the User model
     favorites = db.relationship('Favorite', back_populates='user')
-    new = db.relationship('News', back_populates='user')
+    news = db.relationship('News', back_populates='user')
 
     @hybrid_property
     def password_hash(self):
         return self._password_hash
     
     @password_hash.setter
-    def password_hash(self, new_pass):
+    def password_hash(self, plaintext_password):
+        self._password_hash = self.hash_password(plaintext_password)
+
+    @staticmethod
+    def hash_password(plaintext_password):
         salt = os.urandom(16)
         pass_hash = hashlib.scrypt(
-            new_pass.encode('utf-8'), 
+            plaintext_password.encode('utf-8'), 
             salt=salt, 
             n=16384, 
             r=8, 
             p=1, 
             dklen=64
         )
-        self._password_hash = binascii.hexlify(salt + pass_hash).decode('utf-8')
+        return binascii.hexlify(salt + pass_hash).decode('utf-8')
 
-    def authenticate(self, password):
+    def authenticate(self, plaintext_password):
         salt_and_hash = binascii.unhexlify(self._password_hash)
         salt = salt_and_hash[:16]
         stored_pass_hash = salt_and_hash[16:]
         pass_hash = hashlib.scrypt(
-            password.encode('utf-8'), 
+            plaintext_password.encode('utf-8'), 
             salt=salt, 
             n=16384, 
             r=8, 
@@ -55,6 +60,9 @@ class User(db.Model, SerializerMixin):
 
 class News(db.Model, SerializerMixin):
     __tablename__ = 'news'
+
+    # Prevent recursive serialization
+    serialize_rules = ('-favorites.news', '-user.news')
     
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
@@ -63,14 +71,16 @@ class News(db.Model, SerializerMixin):
     content = db.Column(db.Text, nullable=False)
     article_image = db.Column(db.String(255))
     publishing_organization = db.Column(db.String(100))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))  # Add this line
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    user = db.relationship('User', back_populates='new')\
-    # Establish a relationship with the 'Favorite' model
+    user = db.relationship('User', back_populates='news')
     favorites = db.relationship('Favorite', back_populates='news')
 
 class Favorite(db.Model, SerializerMixin):
     __tablename__ = 'favorites'
+
+    # Prevent recursive serialization
+    serialize_rules = ('-user.favorites', '-news.favorites')
     
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
