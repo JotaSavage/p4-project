@@ -1,18 +1,38 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
-function Signup({
+function Signup() {
   const navigate = useNavigate();
- onSignup }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  const handleSignup = (username, password) => {
+    return fetch('http://127.0.0.1:5555/signup', { // Your backend API endpoint for signup
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error('Signup failed');
+      }
+      return response.json();
+    });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setError(''); // Clear any existing errors
-    // TODO: This will need to be hooked up to the backend signup logic
-    onSignup(username, password, setError);
+
+    handleSignup(username, password)
+      .then(() => {
+        navigate('/data'); // Redirect to the articles page or another page of your choice
+      })
+      .catch((error) => {
+        setError(error.message || 'An error occurred. Please try again.');
+      });
   };
 
   return (
