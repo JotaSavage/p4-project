@@ -15,7 +15,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 
-CORS(app)
+CORS(app, supports_credentials=True, origins=["http://127.0.0.1:5173"])
 migrate = Migrate(app, db)
 
 db.init_app(app)
@@ -131,9 +131,9 @@ def check_session():
 
 @app.route('/logout', methods=['DELETE'])
 def logout():
-    # delete cookie
-    session.pop('user_id')
-    return {'message': 'logged out'}, 200
+    session.pop('user_id', None)  # Make sure to provide the second argument to pop
+    return jsonify({'message': 'logged out'}), 200
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
