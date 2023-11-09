@@ -5,13 +5,17 @@ from sqlalchemy import MetaData
 from sqlalchemy.orm import validates
 from flask_bcrypt import Bcrypt
 from sqlalchemy.ext.hybrid import hybrid_property
+import logging
+import hashlib, binascii
+import os
+
 
 
 metadata = MetaData(naming_convention={
     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
 })
 db = SQLAlchemy(metadata=metadata)
-bcrypt = Bcrypt()
+
 
 
 class User(db.Model, SerializerMixin):
@@ -30,14 +34,31 @@ class User(db.Model, SerializerMixin):
     
     @password_hash.setter
     def password_hash(self, new_pass):
-        pass_hash = bcrypt.generate_password_hash(new_pass.encode('utf-8'))
-        self._password_hash = pass_hash.decode('utf-8')
+        salt = os.urandom(16)
+        pass_hash = hashlib.scrypt(
+            new_pass.encode('utf-8'), 
+            salt=salt, 
+            n=16384, 
+            r=8, 
+            p=1, 
+            dklen=64
+        )
+        self._password_hash = binascii.hexlify(salt + pass_hash).decode('utf-8')
 
     def authenticate(self, password):
-        return bcrypt.check_password_hash(
-            self._password_hash, 
-            password.encode('utf-8')
+        salt_and_hash = binascii.unhexlify(self._password_hash)
+        salt = salt_and_hash[:16]
+        stored_pass_hash = salt_and_hash[16:]
+        pass_hash = hashlib.scrypt(
+            password.encode('utf-8'), 
+            salt=salt, 
+            n=16384, 
+            r=8, 
+            p=1, 
+            dklen=64
         )
+        return pass_hash == stored_pass_hash
+  
 
 
 class News(db.Model, SerializerMixin):

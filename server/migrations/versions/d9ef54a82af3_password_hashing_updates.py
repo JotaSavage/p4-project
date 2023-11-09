@@ -1,8 +1,8 @@
-"""empty message
+"""Password hashing updates
 
-Revision ID: 747256bd90bc
+Revision ID: d9ef54a82af3
 Revises: 
-Create Date: 2023-11-07 19:54:44.774457
+Create Date: 2023-11-08 19:21:43.734917
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '747256bd90bc'
+revision = 'd9ef54a82af3'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,17 +25,18 @@ def upgrade():
     )
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(), nullable=True),
+    sa.Column('username', sa.String(), nullable=False),
+    sa.Column('_password_hash', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('news',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(), nullable=True),
-    sa.Column('date', sa.DateTime(), nullable=True),
+    sa.Column('date_published', sa.DateTime(), nullable=True),
     sa.Column('author', sa.String(), nullable=True),
-    sa.Column('article', sa.String(), nullable=True),
+    sa.Column('content', sa.String(), nullable=True),
     sa.Column('article_image', sa.String(), nullable=True),
-    sa.Column('publishing_org', sa.String(), nullable=True),
+    sa.Column('publishing_organization', sa.String(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('favorite_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['favorite_id'], ['favorites.id'], name=op.f('fk_news_favorite_id_favorites')),
